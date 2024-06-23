@@ -8,43 +8,40 @@ import { AuthResponse } from '../models/authresponse';
 import { BROWSER_STORAGE } from '../storage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class TripDataService {
-
-  constructor(private http: HttpClient,
-    @Inject(BROWSER_STORAGE) private storage: Storage) { }
-
+  constructor(
+    private http: HttpClient,
+    @Inject(BROWSER_STORAGE) private storage: Storage
+  ) {}
+  private tripUrl = 'http://localhost:3000/api/trips';
   private apiBaseUrl = 'http://localhost:3000/api/';
-  private tripUrl = `${this.apiBaseUrl}trips/`;
 
-  getTrips() : Observable<Trip[]> {
-    // console.log('Inside TripDataService::getTrips');
+  getTrips(): Observable<Trip[]> {
     return this.http.get<Trip[]>(this.tripUrl);
   }
 
-  addTrip(formData: Trip) : Observable<Trip> {
-    // console.log('Inside TripDataService::addTrips');
+  addTrip(formData: Trip): Observable<Trip[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('travlr-token')}`,
     });
-    return this.http.post<Trip>(this.tripUrl, formData, { headers: headers });
+    return this.http.post<Trip[]>(this.tripUrl, formData, { headers: headers });
   }
 
-  getTrip(tripCode: string) : Observable<Trip[]> {
-    // console.log('Inside TripDataService::getTrips');
-    return this.http.get<Trip[]>(this.tripUrl + tripCode);
+  getTrip(tripCode: string): Observable<Trip[]> {
+    return this.http.get<Trip[]>(this.tripUrl + '/' + tripCode);
   }
 
-  updateTrip(formData: Trip) : Observable<Trip> {
-    // console.log('Inside TripDataService::addTrips');
+  updateTrip(formData: Trip): Observable<Trip[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('travlr-token')}`,
     });
-    return this.http.put<Trip>(this.tripUrl + formData.code, formData, { headers: headers });
+    return this.http.put<Trip[]>(this.tripUrl + '/' + formData.code, formData, {
+      headers: headers,
+    });
   }
 
   public login(user: User): Promise<AuthResponse> {
@@ -59,9 +56,7 @@ export class TripDataService {
     urlPath: string,
     user: User
   ): Promise<AuthResponse> {
-    const url: string = `${this.apiBaseUrl}${urlPath}`;
+    const url: string = `${this.apiBaseUrl}/${urlPath}`;
     return (await lastValueFrom(this.http.post(url, user))) as AuthResponse;
   }
-
-
 }

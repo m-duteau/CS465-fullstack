@@ -7,13 +7,13 @@ import { AuthenticationService } from '../services/authentication.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   constructor(private authService: AuthenticationService) {}
 
   ngOnInit() {}
-  
+
   public isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }

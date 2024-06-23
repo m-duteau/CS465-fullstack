@@ -11,7 +11,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
   standalone: true,
   imports: [FormsModule, CommonModule, NavbarComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   public formError: string = '';
@@ -20,14 +20,11 @@ export class LoginComponent implements OnInit {
     email: '',
     password: '',
   };
-
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService
   ) {}
-
   ngOnInit() {}
-
   public onLoginSubmit(): void {
     this.formError = '';
     if (!this.credentials.email || !this.credentials.password) {
@@ -36,7 +33,6 @@ export class LoginComponent implements OnInit {
       this.doLogin();
     }
   }
-
   private doLogin(): void {
     this.authenticationService
       .login(this.credentials)
